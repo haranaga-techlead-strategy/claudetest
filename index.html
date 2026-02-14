@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原永宗一 | プロフェッショナル・デイトレイダー</title>
+  <meta name="description" content="デイトレイダー原永宗一のポートフォリオサイト。年率10%超の安定したリターン実績。">
+  <meta property="og:title" content="原永宗一 | プロフェッショナル・デイトレイダー">
+  <meta property="og:description" content="大きな資金を動かし、年率10%超の安定したリターンを実現するデイトレイダー">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== Header / Navigation ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#" class="header__logo">HARANAGA SOUICHI</a>
+      <nav class="header__nav" id="nav">
+        <ul class="header__nav-list">
+          <li><a href="#performance" class="header__nav-link">実績</a></li>
+          <li><a href="#about" class="header__nav-link">プロフィール</a></li>
+          <li><a href="#strategy" class="header__nav-link">戦略</a></li>
+          <li><a href="#contact" class="header__nav-link">お問い合わせ</a></li>
+        </ul>
+      </nav>
+      <button class="header__hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <h1 class="hero__title animate-on-load">大きな資金を動かし、確かな実績を。</h1>
+        <p class="hero__subtitle animate-on-load">年率10%のリターンを安定的に実現するデイトレイダー</p>
+        <div class="hero__stats animate-on-load">
+          <div class="hero__stat">
+            <span class="hero__stat-number" data-target="10" data-suffix="%+">0</span>
+            <span class="hero__stat-label">年率リターン</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-number" data-target="10" data-suffix="年+">0</span>
+            <span class="hero__stat-label">トレード経験</span>
+          </div>
+          <div class="hero__stat">
+            <span class="hero__stat-number" data-target="50000" data-suffix="回+" data-format="comma">0</span>
+            <span class="hero__stat-label">累計取引回数</span>
+          </div>
+        </div>
+        <a href="#performance" class="hero__cta btn btn--primary">実績を見る</a>
+      </div>
+    </section>
+
+    <!-- ===== Performance Section ===== -->
+    <section class="section performance" id="performance">
+      <div class="container">
+        <h2 class="section__title fade-in">Performance<span class="section__title-sub">実績</span></h2>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid fade-in">
+          <div class="kpi-card">
+            <span class="kpi-card__value text-primary">10.5%</span>
+            <span class="kpi-card__label">平均年率リターン</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-card__value">64.8%</span>
+            <span class="kpi-card__label">平均勝率</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-card__value">1.8</span>
+            <span class="kpi-card__label">シャープレシオ</span>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-card__value">2.1</span>
+            <span class="kpi-card__label">プロフィットファクター</span>
+          </div>
+        </div>
+
+        <!-- Performance Table -->
+        <div class="table-wrapper fade-in">
+          <table class="perf-table">
+            <thead>
+              <tr>
+                <th>年度</th>
+                <th>リターン</th>
+                <th>勝率</th>
+                <th>最大ドローダウン</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2025</td>
+                <td class="text-success">+12.3%</td>
+                <td>68%</td>
+                <td class="text-danger">-3.2%</td>
+              </tr>
+              <tr>
+                <td>2024</td>
+                <td class="text-success">+10.8%</td>
+                <td>65%</td>
+                <td class="text-danger">-4.1%</td>
+              </tr>
+              <tr>
+                <td>2023</td>
+                <td class="text-success">+9.5%</td>
+                <td>63%</td>
+                <td class="text-danger">-5.0%</td>
+              </tr>
+              <tr>
+                <td>2022</td>
+                <td class="text-success">+11.2%</td>
+                <td>67%</td>
+                <td class="text-danger">-3.8%</td>
+              </tr>
+              <tr>
+                <td>2021</td>
+                <td class="text-success">+8.7%</td>
+                <td>61%</td>
+                <td class="text-danger">-6.2%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-wrapper fade-in">
+          <h3 class="chart-wrapper__title">資産推移（2021〜2025）</h3>
+          <canvas id="performanceChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About Section ===== -->
+    <section class="section section--alt about" id="about">
+      <div class="container">
+        <h2 class="section__title fade-in">About<span class="section__title-sub">プロフィール</span></h2>
+
+        <div class="about__content fade-in">
+          <div class="about__photo">
+            <img src="assets/images/profile-placeholder.svg" alt="原永宗一のプロフィール写真" width="300" height="300">
+          </div>
+          <div class="about__text">
+            <h3 class="about__name">原永 宗一<span class="about__name-reading">はらなが そういち</span></h3>
+            <p class="about__title-role">プロフェッショナル・デイトレイダー</p>
+            <p class="about__bio">
+              大学卒業後、金融業界でキャリアをスタート。独立後、10年以上にわたりデイトレーダーとして活動。大きな資金を運用し、年率10%超のリターンを安定的に達成。リスク管理を最重視した堅実なトレードスタイルで、着実に資産を成長させている。
+            </p>
+          </div>
+        </div>
+
+        <!-- Philosophy Cards -->
+        <div class="philosophy-grid fade-in">
+          <div class="philosophy-card">
+            <div class="philosophy-card__icon">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <h3 class="philosophy-card__title">リスク管理第一</h3>
+            <p class="philosophy-card__text">損失を最小限に抑えることが、長期的な利益の源泉</p>
+          </div>
+          <div class="philosophy-card">
+            <div class="philosophy-card__icon">
+              <i data-lucide="bar-chart-3"></i>
+            </div>
+            <h3 class="philosophy-card__title">データドリブン</h3>
+            <p class="philosophy-card__text">感情ではなく、データと分析に基づいた意思決定</p>
+          </div>
+          <div class="philosophy-card">
+            <div class="philosophy-card__icon">
+              <i data-lucide="refresh-cw"></i>
+            </div>
+            <h3 class="philosophy-card__title">継続的改善</h3>
+            <p class="philosophy-card__text">毎日のトレード記録と振り返りで、戦略を磨き続ける</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Strategy Section ===== -->
+    <section class="section strategy" id="strategy">
+      <div class="container">
+        <h2 class="section__title fade-in">Strategy<span class="section__title-sub">戦略</span></h2>
+
+        <!-- Strategy Cards -->
+        <div class="strategy-grid fade-in">
+          <div class="strategy-card">
+            <div class="strategy-card__icon">
+              <i data-lucide="zap"></i>
+            </div>
+            <h3 class="strategy-card__title">スキャルピング</h3>
+            <p class="strategy-card__text">短時間の価格変動を捉え、小さな利益を積み重ねる</p>
+            <span class="strategy-card__timeframe">数秒〜数分</span>
+          </div>
+          <div class="strategy-card">
+            <div class="strategy-card__icon">
+              <i data-lucide="trending-up"></i>
+            </div>
+            <h3 class="strategy-card__title">デイトレード</h3>
+            <p class="strategy-card__text">日中の値動きを分析し、その日のうちにポジションをクローズ</p>
+            <span class="strategy-card__timeframe">数分〜数時間</span>
+          </div>
+          <div class="strategy-card">
+            <div class="strategy-card__icon">
+              <i data-lucide="calendar"></i>
+            </div>
+            <h3 class="strategy-card__title">イベントドリブン</h3>
+            <p class="strategy-card__text">経済指標発表や企業決算などのイベントに合わせた戦略的なエントリー</p>
+            <span class="strategy-card__timeframe">イベント前後</span>
+          </div>
+        </div>
+
+        <!-- Markets -->
+        <div class="markets fade-in">
+          <h3 class="markets__title">得意マーケット</h3>
+          <div class="markets__tags">
+            <span class="tag">日本株（東証プライム）</span>
+            <span class="tag">米国株（NYSE / NASDAQ）</span>
+            <span class="tag">為替（主要通貨ペア）</span>
+          </div>
+        </div>
+
+        <!-- Risk Management -->
+        <div class="risk-mgmt fade-in">
+          <h3 class="risk-mgmt__title">リスク管理方針</h3>
+          <ul class="risk-mgmt__list">
+            <li>1トレードあたりの最大リスク：資産の<strong>1%以下</strong></li>
+            <li>日次最大損失制限あり</li>
+            <li>ストップロス必須のルール化</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact Section ===== -->
+    <section class="section section--alt contact" id="contact">
+      <div class="container">
+        <h2 class="section__title fade-in">Contact<span class="section__title-sub">お問い合わせ</span></h2>
+
+        <form class="contact-form fade-in" id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="name" class="form-label">お名前 <span class="required">*</span></label>
+            <input type="text" id="name" name="name" class="form-input" required placeholder="山田 太郎">
+            <span class="form-error" id="nameError"></span>
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">メールアドレス <span class="required">*</span></label>
+            <input type="email" id="email" name="email" class="form-input" required placeholder="example@email.com">
+            <span class="form-error" id="emailError"></span>
+          </div>
+          <div class="form-group">
+            <label for="subject" class="form-label">件名</label>
+            <input type="text" id="subject" name="subject" class="form-input" placeholder="お問い合わせの件名">
+          </div>
+          <div class="form-group">
+            <label for="message" class="form-label">メッセージ <span class="required">*</span></label>
+            <textarea id="message" name="message" class="form-input form-textarea" required rows="6" placeholder="メッセージをご入力ください"></textarea>
+            <span class="form-error" id="messageError"></span>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full">送信する</button>
+          <p class="contact-form__note">※ 現在、フォーム送信先は未設定です。</p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__sns">
+        <a href="#" class="footer__sns-link" aria-label="X (Twitter)">
+          <i data-lucide="twitter"></i>
+        </a>
+        <a href="#" class="footer__sns-link" aria-label="LinkedIn">
+          <i data-lucide="linkedin"></i>
+        </a>
+      </div>
+      <p class="footer__copyright">&copy; 2025 Haranaga Souichi. All Rights Reserved.</p>
+      <p class="footer__disclaimer">
+        当サイトに掲載されている情報は、投資の助言や推奨を目的としたものではありません。
+        過去の実績は将来の結果を保証するものではありません。
+        投資に関する最終的な判断はご自身の責任でお願いいたします。
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js" defer></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/animation.js" defer></script>
+  <script src="js/chart.js" defer></script>
+
+</body>
+</html>
