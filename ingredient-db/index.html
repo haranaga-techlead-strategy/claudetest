@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>化粧品原料データベース | 処方開発支援システム</title>
+  <meta name="description" content="化粧品の原料マスターデータ管理と処方開発支援のためのデータベースシステム" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="app-header">
+    <div class="app-logo">
+      <span class="app-logo-icon">🧪</span>
+      <div>
+        <div class="app-logo-text">化粧品原料データベース</div>
+        <div class="app-logo-sub">処方開発支援システム</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-sm" onclick="triggerImport()">
+        <span>📥</span> <span>インポート</span>
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="exportAllData()">
+        <span>📤</span> <span>エクスポート</span>
+      </button>
+      <input type="file" id="import-file-input" accept=".json" style="display:none" />
+    </div>
+  </header>
+
+  <!-- タブナビゲーション -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="ingredients" onclick="switchTab('ingredients')">
+      🔬 原料マスター
+    </button>
+    <button class="tab-btn" data-tab="formulas" onclick="switchTab('formulas')">
+      📋 処方管理
+    </button>
+    <button class="tab-btn" data-tab="stats" onclick="switchTab('stats')">
+      📊 統計・概要
+    </button>
+  </nav>
+
+  <!-- メインコンテンツ -->
+  <main class="main-content">
+
+    <!-- ===== 原料マスタータブ ===== -->
+    <div id="tab-ingredients" class="tab-panel active">
+
+      <div class="toolbar">
+        <input
+          type="text"
+          id="ingredient-search"
+          class="search-input"
+          placeholder="🔍 原料名・INCI名・CAS番号で検索..."
+        />
+        <select id="ingredient-category-filter" class="select-filter">
+          <option value="">すべてのカテゴリ</option>
+        </select>
+        <button class="btn btn-primary" onclick="openIngredientModal()">
+          ＋ 原料を登録
+        </button>
+        <button class="btn btn-secondary" onclick="exportIngredientCSV()">
+          📥 CSV出力
+        </button>
+        <span class="result-count" id="ingredient-count">0 件</span>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>カテゴリ</th>
+              <th>原料名</th>
+              <th>INCI名</th>
+              <th>CAS番号</th>
+              <th class="text-right">最大配合濃度</th>
+              <th class="text-right">単価</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="ingredient-tbody">
+            <tr>
+              <td colspan="7" class="empty-state">
+                <div class="empty-icon">⏳</div>
+                <div>読み込み中...</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== 処方管理タブ ===== -->
+    <div id="tab-formulas" class="tab-panel">
+
+      <div class="toolbar">
+        <input
+          type="text"
+          id="formula-search"
+          class="search-input"
+          placeholder="🔍 処方名・製品タイプで検索..."
+        />
+        <select id="formula-status-filter" class="select-filter">
+          <option value="">すべてのステータス</option>
+          <option value="開発中">開発中</option>
+          <option value="レビュー中">レビュー中</option>
+          <option value="承認済">承認済</option>
+          <option value="量産対応">量産対応</option>
+          <option value="廃止">廃止</option>
+        </select>
+        <button class="btn btn-primary" onclick="openNewFormulaModal()">
+          ＋ 新規処方を作成
+        </button>
+        <span class="result-count" id="formula-count">0 件</span>
+      </div>
+
+      <div class="formula-grid" id="formula-list">
+        <div class="empty-state">
+          <div class="empty-icon">⏳</div>
+          <div>読み込み中...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 統計タブ ===== -->
+    <div id="tab-stats" class="tab-panel">
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="stat-ingredient-count">-</div>
+          <div class="stat-label">登録原料数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-active-count">-</div>
+          <div class="stat-label">有効原料数</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-formula-count">-</div>
+          <div class="stat-label">登録処方数</div>
+        </div>
+      </div>
+
+      <div class="stats-two-col">
+        <div class="stats-section">
+          <div class="stats-section-title">カテゴリ別原料数</div>
+          <div id="category-chart"></div>
+        </div>
+        <div>
+          <div class="stats-section" style="margin-bottom:16px;">
+            <div class="stats-section-title">処方ステータス</div>
+            <div id="status-chart"></div>
+          </div>
+          <div class="stats-section">
+            <div class="stats-section-title">最近更新した処方</div>
+            <div id="recent-formulas"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== 処方詳細パネル ===== -->
+  <aside id="formula-detail-panel" class="detail-panel">
+    <div class="detail-panel-header">
+      <div>
+        <div class="detail-panel-title" id="detail-formula-name">処方名</div>
+        <div class="detail-panel-meta">
+          <span class="badge badge-blue" id="detail-formula-type"></span>
+          <span class="badge badge-orange" id="detail-formula-status"></span>
+          <span class="text-muted text-sm" id="detail-formula-version"></span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-secondary btn-sm" onclick="exportFormulaCSV()">CSV出力</button>
+        <button class="close-btn" onclick="closeFormulaDetail()">✕</button>
+      </div>
+    </div>
+    <div class="detail-panel-body">
+
+      <!-- 処方説明 -->
+      <div class="detail-section">
+        <div id="detail-formula-desc" class="detail-text"></div>
+        <div id="detail-formula-notes" class="detail-text" style="margin-top:4px;font-style:italic;"></div>
+      </div>
+
+      <!-- 配合リスト -->
+      <div class="detail-section">
+        <div class="detail-section-title">配合リスト</div>
+
+        <div class="add-item-form">
+          <select id="add-ingredient-select">
+            <option value="">原料を選択...</option>
+          </select>
+          <input type="number" id="add-ingredient-pct" placeholder="%" min="0.001" max="100" step="0.01" />
+          <button class="btn btn-primary btn-sm" onclick="addFormulaItem()">追加</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>原料名</th>
+                <th>カテゴリ</th>
+                <th class="text-right">配合量(%)</th>
+                <th class="text-right">上限</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="formula-items-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="total-row">
+          <span class="text-muted text-sm">合計</span>
+          <span class="total-pct pct-under" id="total-percentage">0.00%</span>
+        </div>
+      </div>
+
+      <!-- 規制チェック -->
+      <div class="detail-section">
+        <div class="detail-section-title">規制チェック</div>
+        <div id="compliance-results">
+          <div class="text-muted text-sm">原料を追加すると自動チェックします</div>
+        </div>
+      </div>
+
+      <!-- コスト計算 -->
+      <div class="detail-section">
+        <div class="detail-section-title">コスト計算（参考）</div>
+        <div id="cost-summary">
+          <div class="text-muted text-sm">単価が登録されている原料がありません</div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ===== 原料登録・編集モーダル ===== -->
+  <div id="ingredient-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="ingredient-modal-title">原料を新規登録</div>
+        <button class="close-btn" onclick="closeIngredientModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="ingredient-form" onsubmit="return false;">
+
+          <div class="form-group">
+            <label class="form-label">原料名（日本語）<span class="required">*</span></label>
+            <input id="ing-name" type="text" class="form-control" placeholder="例：グリセリン" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">INCI名</label>
+              <input id="ing-inci-name" type="text" class="form-control" placeholder="例：GLYCERIN" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">CAS番号</label>
+              <input id="ing-cas-number" type="text" class="form-control" placeholder="例：56-81-5" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">カテゴリ</label>
+            <select id="ing-category" class="form-control"></select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">最大配合濃度</label>
+              <input id="ing-max-concentration" type="number" class="form-control" placeholder="例：30" min="0" max="100" step="0.001" />
+              <div class="form-hint">規制・推奨上限値</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">単位</label>
+              <select id="ing-unit" class="form-control">
+                <option value="%">%</option>
+                <option value="ppm">ppm</option>
+                <option value="mg/kg">mg/kg</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">仕入先</label>
+              <input id="ing-supplier" type="text" class="form-control" placeholder="仕入先名" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">単価</label>
+              <div style="display:flex;gap:6px;">
+                <input id="ing-unit-cost" type="number" class="form-control" placeholder="円" min="0" style="flex:1;" />
+                <select id="ing-cost-unit" class="form-control" style="width:70px;">
+                  <option value="kg">/ kg</option>
+                  <option value="g">/ g</option>
+                  <option value="L">/ L</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">規制情報</label>
+            <textarea id="ing-regulations" class="form-control" rows="2"
+              placeholder="例：EU Annex V, No.29。最大配合量1.0%（日本・EU共通）"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">備考・特記事項</label>
+            <textarea id="ing-notes" class="form-control" rows="3"
+              placeholder="使用上の注意、相溶性、保管条件など"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="ing-is-active" checked />
+              有効（無効にすると処方の原料選択リストから除外されます）
+            </label>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeIngredientModal()">キャンセル</button>
+        <button class="btn btn-primary" onclick="saveIngredient()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 新規処方モーダル ===== -->
+  <div id="formula-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="formula-modal-title">新規処方を作成</div>
+        <button class="close-btn" onclick="closeFormulaModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="formula-form" onsubmit="return false;">
+
+          <div class="form-group">
+            <label class="form-label">処方名<span class="required">*</span></label>
+            <input id="fml-name" type="text" class="form-control" placeholder="例：保湿化粧水 v1.0" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">製品タイプ</label>
+              <select id="fml-product-type" class="form-control"></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">バージョン</label>
+              <input id="fml-version" type="text" class="form-control" value="1.0" placeholder="例：1.0" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">ステータス</label>
+            <select id="fml-status" class="form-control"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">処方概要</label>
+            <textarea id="fml-description" class="form-control" rows="2"
+              placeholder="処方のコンセプト・特徴を記入"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">備考・開発メモ</label>
+            <textarea id="fml-notes" class="form-control" rows="2"
+              placeholder="目標pH、粘度、その他の開発メモ"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeFormulaModal()">キャンセル</button>
+        <button class="btn btn-primary" onclick="saveFormula()">作成</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- アラートコンテナ -->
+  <div id="alert-container"></div>
+
+  <!-- スクリプト -->
+  <script src="js/db.js"></script>
+  <script src="js/ingredients.js"></script>
+  <script src="js/formulas.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
