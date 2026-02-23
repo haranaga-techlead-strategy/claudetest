@@ -1,0 +1,22 @@
+# Claude API
+anthropic>=0.40.0
+
+# 音声認識（STT）
+SpeechRecognition>=3.10.0
+
+# マイク入力（SpeechRecognition のバックエンド）
+# Linux: sudo apt-get install portaudio19-dev python3-pyaudio
+# macOS: brew install portaudio && pip install pyaudio
+PyAudio>=0.2.14
+
+# 音声合成 TTS（Google、日本語品質が高い、インターネット必要）
+gTTS>=2.5.0
+
+# gTTS の音声再生
+pygame>=2.5.0
+
+# オフライン TTS フォールバック（任意）
+# pyttsx3>=2.90
+
+# 環境変数管理
+python-dotenv>=1.0.0

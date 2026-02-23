@@ -1,0 +1,113 @@
+{
+  "events": [
+    {
+      "id": "1",
+      "date": "2026-02-23",
+      "time": "08:00",
+      "title": "朝の服薬",
+      "description": "血圧の薬（アムロジピン）と血液サラサラの薬（バイアスピリン）を服用",
+      "type": "medication",
+      "recurring": "daily"
+    },
+    {
+      "id": "2",
+      "date": "2026-02-23",
+      "time": "10:00",
+      "title": "訪問介護（鈴木ヘルパー）",
+      "description": "入浴介助、体操、食事の準備サポート",
+      "type": "care_visit"
+    },
+    {
+      "id": "3",
+      "date": "2026-02-23",
+      "time": "12:00",
+      "title": "昼の服薬",
+      "description": "胃薬（ネキシウム）を食後に服用",
+      "type": "medication",
+      "recurring": "daily"
+    },
+    {
+      "id": "4",
+      "date": "2026-02-23",
+      "time": "20:00",
+      "title": "夜の服薬",
+      "description": "眠前の薬（マイスリー）を服用",
+      "type": "medication",
+      "recurring": "daily"
+    },
+    {
+      "id": "5",
+      "date": "2026-02-24",
+      "time": "08:00",
+      "title": "朝の服薬",
+      "description": "血圧の薬、血液サラサラの薬を服用",
+      "type": "medication",
+      "recurring": "daily"
+    },
+    {
+      "id": "6",
+      "date": "2026-02-24",
+      "time": "14:00",
+      "title": "リハビリ体操",
+      "description": "理学療法士の指示による自主リハビリ（20分）",
+      "type": "rehabilitation"
+    },
+    {
+      "id": "7",
+      "date": "2026-02-25",
+      "time": "08:00",
+      "title": "朝の服薬",
+      "description": "血圧の薬、血液サラサラの薬を服用",
+      "type": "medication",
+      "recurring": "daily"
+    },
+    {
+      "id": "8",
+      "date": "2026-02-25",
+      "time": "10:00",
+      "title": "訪問介護（鈴木ヘルパー）",
+      "description": "入浴介助、体操、食事の準備サポート",
+      "type": "care_visit"
+    },
+    {
+      "id": "9",
+      "date": "2026-02-25",
+      "time": "14:00",
+      "title": "内科定期検診（山田先生）",
+      "description": "さくら内科クリニックで血圧・血液検査の定期検診",
+      "type": "medical"
+    },
+    {
+      "id": "10",
+      "date": "2026-02-26",
+      "time": "10:00",
+      "title": "リハビリ体操",
+      "description": "理学療法士の指示による自主リハビリ（20分）",
+      "type": "rehabilitation"
+    },
+    {
+      "id": "11",
+      "date": "2026-02-27",
+      "time": "10:00",
+      "title": "訪問介護（鈴木ヘルパー）",
+      "description": "入浴介助、体操、食事の準備サポート",
+      "type": "care_visit"
+    },
+    {
+      "id": "12",
+      "date": "2026-02-28",
+      "time": "11:00",
+      "title": "息子（太郎さん）来訪",
+      "description": "月末の定期訪問、食料品の買い出しも",
+      "type": "family"
+    },
+    {
+      "id": "13",
+      "date": "2026-03-01",
+      "time": "10:00",
+      "title": "ケアマネ（中村さん）訪問",
+      "description": "月1回の介護計画確認・更新",
+      "type": "care_visit"
+    }
+  ]
+}
