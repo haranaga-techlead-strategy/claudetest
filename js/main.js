@@ -69,12 +69,12 @@ function initSmoothScroll() {
   });
 }
 
-/* ----- Contact Form Validation ----- */
+/* ----- Contact Form (Azure Functions API) ----- */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     let isValid = true;
 
@@ -112,8 +112,44 @@ function initContactForm() {
       clearError(message, messageError);
     }
 
-    if (isValid) {
-      alert('送信機能は現在未設定です。フォーム送信先を設定してください。');
+    if (!isValid) return;
+
+    // Azure Functions API へ送信
+    const submitBtn = form.querySelector('[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.value.trim(),
+          email: email.value.trim(),
+          subject: (form.querySelector('#subject') || {}).value || '',
+          message: message.value.trim()
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        showFormSuccess(form, data.message || 'お問い合わせを受け付けました。');
+      } else {
+        // サーバー側バリデーションエラーを反映
+        if (data.errors) {
+          if (data.errors.name)    showError(name, nameError, data.errors.name);
+          if (data.errors.email)   showError(email, emailError, data.errors.email);
+          if (data.errors.message) showError(message, messageError, data.errors.message);
+        } else {
+          showFormError(form, data.error || '送信に失敗しました。しばらくしてから再度お試しください。');
+        }
+      }
+    } catch (err) {
+      showFormError(form, 'ネットワークエラーが発生しました。接続を確認してください。');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送信する';
     }
   });
 
@@ -124,6 +160,33 @@ function initContactForm() {
       clearError(input, errorEl);
     });
   });
+}
+
+function showFormSuccess(form, message) {
+  let notice = form.querySelector('.form-notice');
+  if (!notice) {
+    notice = document.createElement('p');
+    notice.className = 'form-notice';
+    form.appendChild(notice);
+  }
+  notice.textContent = message;
+  notice.style.color = '#16a34a';
+  notice.style.marginTop = '12px';
+  notice.style.fontWeight = '600';
+  form.reset();
+}
+
+function showFormError(form, message) {
+  let notice = form.querySelector('.form-notice');
+  if (!notice) {
+    notice = document.createElement('p');
+    notice.className = 'form-notice';
+    form.appendChild(notice);
+  }
+  notice.textContent = message;
+  notice.style.color = '#dc2626';
+  notice.style.marginTop = '12px';
+  notice.style.fontWeight = '600';
 }
 
 function showError(input, errorEl, message) {
